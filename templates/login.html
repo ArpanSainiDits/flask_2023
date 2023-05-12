@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>login</title>
+    </head 
+{% include "header.html" %}
+<div class="container">
+  <div class="login_main mt-3 mb-3" style="display: flex;align-items: center;justify-content: center;">  
+
+    <form id="loginform" class="form-control" style="max-width:50%;">
+      <div class="mb-3">
+        <span id="errormsg" style="color: red;"></span>
+        <h5 id="success" style="color: green;"></h5>
+      </div> 
+    <div class="col md-6 d-flex justify-content-center align-items-center">
+      <div class="col md-6 mb-4 me-3">  
+    <label for="exampleInputEmail1" class="form-label">Email address</label>
+    <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" >
+  </div>
+</div>
+<div class="col md-6 d-flex justify-content-center align-items-center">
+  <div class="col md-6 mb-4 me-3">  
+ 
+    <label for="exampleInputPassword1" class="form-label">Password</label>
+    <input type="password" name="password" class="form-control" id="password" >
+  </div>
+</div>
+  <button type="submit" class="btn btn-primary">Login</button>
+</form>
+</div>
+</div>
+  {% include "footer.html" %}
+</body>
+</html>
+
+  
+<script type="text/javascript">
+  $(document).on('submit','#loginform',function(e)
+                 {
+
+    e.preventDefault();
+
+    $.ajax({
+      type:'POST',
+      url:'/login',
+      data:{
+        email:$("#email").val(),
+        password:$("#password").val()
+      },
+      success:function(res)
+      {
+        console.log('res',res);
+     
+        if(res == "Successfully"){
+          $('#success').text('You have successfully logged in.');
+          window.location = "/dashboard";
+          $("#email").val('');
+          $("#password").val('');
+          $('#errormsg').text('');
+          window.setTimeout(function() {
+            window.location.href = '/dashboard';
+            }, 2000);
+        }
+        else{
+          $('#errormsg').text(res);
+        }
+       
+      }
+    })
+  });
+</script>

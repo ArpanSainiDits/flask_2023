@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>signup</title>
+    </head>
+{% include "header.html" %}
+<div class="container">
+  <div class="signup_main mt-3 mb-3" style="display: flex;align-items: center;justify-content: center;">
+    
+    <!-- action="{{ url_for('signup') }}" method="post" -->
+<form id="signupform" class="form-control" style="max-width:80%;">
+  <center><h3>Register</h3></center>
+
+  <div class="mb-3">
+    <span id="errormsg" style="color: red;"></span>
+  </div>  
+  <div class="col md-12 d-flex d-flex justify-content-center align-items-center">
+    <div class="col md-6 mb-4 me-3">
+       <label for="exampleFirstName" class="form-label">First Name</label>
+        <input type="text" name="firstname" id="firstname" class="form-control" id="exampleFirstName" aria-describedby="emailHelp" >
+    </div>  
+    <div class="col md-6 mb-4">
+        <label for="exampleLastName" class="form-label">Last Name</label>
+        <input type="text" name="lastname" id="lastname" class="form-control" id="exampleLasttName" aria-describedby="emailHelp" >
+    </div>
+    </div>
+    <div class="col md-12 d-flex d-flex justify-content-center align-items-center">
+      <div class="col md-6 mb-4 me-3">
+        <label for="exampleLastName" class="form-label">Role</label>
+
+        <select class="form-select" id="owners" name="owners" >
+          <option value="">Select</option>
+          <option value="promoters">Promoters</option>
+          <option value="Nightclubowners">Night Club Owners</option>
+        </select>  
+      </div>
+      <div class="col md-6 mb-4">
+    <!-- label for="exampleInputEmail1" class="form-label">Email address</label -->
+    <label for="exampleLastName" class="form-label">E-Mail</label>
+
+    <input type="email" name="email" class="form-control" id="email"  aria-describedby="emailHelp" >
+  </div>
+  </div>
+  <div class="col md-12 d-flex d-flex justify-content-center align-items-center">
+    <div class="col md-6 mb-4 me-3">
+    <label for="exampleInputPassword1" class="form-label">Password</label>
+    <input type="password" name="password" class="form-control" id="password" >
+  </div>
+  <div class="col md-6 mb-4">
+    <label for="exampleInputCPassword1" class="form-label">Confirm Password</label>
+    <input type="password" name="conpassword" class="form-control" id="conpassword" >
+  </div>
+ </div> 
+  <div class="d-flex justify-content-center">
+
+    <button type="submit" class="btn btn-primary mb-3">SignUp</button>
+
+  </div>
+</form>
+</div>
+</div>
+  {% include "footer.html" %}
+</body>
+</html>
+
+  
+<script type="text/javascript">
+  $(document).on('submit','#signupform',function(e)
+                 {
+
+    e.preventDefault();
+    var firstname = $("#firstname").val();
+    var lastname = $("#lastname").val();
+    var owners = $("#owners").val();
+    var email = $("#email").val();
+    var password = $("#password").val();
+    var conpassword=$("#conpassword").val();
+
+    $.ajax({
+      type:'POST',
+      url:'/signup',
+      data:{
+        firstname:firstname,
+        lastname:lastname,
+        owners:owners,
+        email:email,
+        password:password,
+        conpassword:conpassword,
+      },
+      success:function(res)
+      {
+        console.log('res',res);
+     
+        if(res == "User registered successfully"){
+          window.location = "/login";
+          $("#firstname").val('');
+          $("#lastname").val('');
+          $("#owners").val('');
+          $("#email").val('');
+          $("#password").val('');
+          $("#conpassword").val('');
+          $('#errormsg').text('');
+
+        }
+        else{
+          $('#errormsg').text(res);
+        }
+       
+      }
+    })
+  });
+</script>
